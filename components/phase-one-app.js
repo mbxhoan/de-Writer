@@ -8,6 +8,7 @@ import {
   CHANNEL_MAP,
   DEFAULT_ARTICLE_TEMPLATE,
   DEFAULT_TOPIC_TEMPLATE,
+  MODEL_OPTIONS,
   POST_STATUSES,
   PROVIDERS,
 } from '@/lib/phase-one/constants';
@@ -17,6 +18,7 @@ function blankProduct(workspace) {
   return {
     id: null,
     name: '',
+    color: '#315be8',
     channels: ['facebook', 'instagram'],
     languageOverride: null,
     providerOverride: null,
@@ -104,7 +106,12 @@ function formatStatusLabel(status) {
 
 function ProductCard({ product, selected, onClick }) {
   return (
-    <button className={`product-card ${selected ? 'product-card-active' : ''}`} onClick={onClick} type="button">
+    <button
+      className={`product-card ${selected ? 'product-card-active' : ''}`}
+      style={{ '--product-color': product.color || '#315be8' }}
+      onClick={onClick}
+      type="button"
+    >
       <div className="product-card-head">
         <strong>{product.name}</strong>
         <span className="mini-pill">{product.resolvedProvider}</span>
@@ -209,7 +216,7 @@ export default function PhaseOneApp({ initialState }) {
     model: initialState.workspace.aiSettings.model,
   });
   const [credentialDrafts, setCredentialDrafts] = useState({ openai: '', anthropic: '' });
-  const [availableModels, setAvailableModels] = useState({ openai: [], anthropic: [] });
+  const [availableModels, setAvailableModels] = useState(MODEL_OPTIONS);
   const [productDraft, setProductDraft] = useState(
     initialState.products[0] ? initialState.products[0] : blankProduct(initialState.workspace),
   );
@@ -237,6 +244,30 @@ export default function PhaseOneApp({ initialState }) {
 
   const selectedProduct = appState.products.find((product) => product.id === selectedProductId) || null;
   const selectedPost = appState.posts.find((post) => post.id === selectedPostId) || null;
+
+  function modelOptionsFor(provider, currentModel = '') {
+    return [...new Set([...(availableModels[provider] || []), currentModel].filter(Boolean))];
+  }
+
+  function updateWorkspaceProvider(provider) {
+    const options = modelOptionsFor(provider);
+    const defaultModel = PROVIDERS.find((item) => item.id === provider)?.defaultModel || options[0] || '';
+    setWorkspaceDraft((current) => ({
+      ...current,
+      provider,
+      model: options.includes(current.model) ? current.model : defaultModel,
+    }));
+  }
+
+  function updateProductProvider(providerOverride) {
+    const provider = providerOverride || workspaceDraft.provider;
+    const options = modelOptionsFor(provider);
+    setProductDraft((current) => ({
+      ...current,
+      providerOverride,
+      modelOverride: options.includes(current.modelOverride) ? current.modelOverride : '',
+    }));
+  }
 
   useEffect(() => {
     setWorkspaceDraft({
@@ -741,9 +772,7 @@ export default function PhaseOneApp({ initialState }) {
               <select
                 className="input"
                 value={workspaceDraft.provider}
-                onChange={(event) =>
-                  setWorkspaceDraft((current) => ({ ...current, provider: event.target.value }))
-                }
+                onChange={(event) => updateWorkspaceProvider(event.target.value)}
               >
                 {PROVIDERS.map((provider) => (
                   <option key={provider.id} value={provider.id}>
@@ -756,11 +785,15 @@ export default function PhaseOneApp({ initialState }) {
 
           <label className="field">
             <span>Model mặc định</span>
-            <input
+            <select
               className="input"
               value={workspaceDraft.model}
               onChange={(event) => setWorkspaceDraft((current) => ({ ...current, model: event.target.value }))}
-            />
+            >
+              {modelOptionsFor(workspaceDraft.provider, workspaceDraft.model).map((modelId) => (
+                <option key={modelId} value={modelId}>{modelId}</option>
+              ))}
+            </select>
           </label>
 
           <div className="action-row">
@@ -864,6 +897,19 @@ export default function PhaseOneApp({ initialState }) {
                   />
                 </label>
 
+                <label className="field color-field">
+                  <span>Màu nhận diện</span>
+                  <div className="color-control">
+                    <input
+                      aria-label="Màu nhận diện sản phẩm"
+                      type="color"
+                      value={productDraft.color || '#315be8'}
+                      onChange={(event) => setProductDraft((current) => ({ ...current, color: event.target.value }))}
+                    />
+                    <code>{productDraft.color || '#315be8'}</code>
+                  </div>
+                </label>
+
                 <label className="field">
                   <span>Language override</span>
                   <select
@@ -887,12 +933,7 @@ export default function PhaseOneApp({ initialState }) {
                   <select
                     className="input"
                     value={productDraft.providerOverride || ''}
-                    onChange={(event) =>
-                      setProductDraft((current) => ({
-                        ...current,
-                        providerOverride: event.target.value || null,
-                      }))
-                    }
+                    onChange={(event) => updateProductProvider(event.target.value || null)}
                   >
                     <option value="">Kế thừa workspace</option>
                     {PROVIDERS.map((provider) => (
@@ -905,13 +946,18 @@ export default function PhaseOneApp({ initialState }) {
 
                 <label className="field">
                   <span>Model override</span>
-                  <input
+                  <select
                     className="input"
                     value={productDraft.modelOverride || ''}
                     onChange={(event) =>
                       setProductDraft((current) => ({ ...current, modelOverride: event.target.value }))
                     }
-                  />
+                  >
+                    <option value="">Kế thừa workspace ({workspaceDraft.model})</option>
+                    {modelOptionsFor(productDraft.providerOverride || workspaceDraft.provider, productDraft.modelOverride).map((modelId) => (
+                      <option key={modelId} value={modelId}>{modelId}</option>
+                    ))}
+                  </select>
                 </label>
               </div>
 

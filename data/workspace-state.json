@@ -26,16 +26,14 @@
       }
     },
     "createdAt": "2026-07-07T02:00:00.000Z",
-    "updatedAt": "2026-07-17T06:34:42.145Z"
+    "updatedAt": "2026-07-17T07:50:08.762Z"
   },
   "products": [
     {
       "id": "product_sunrise",
-      "name": "Sunrise Hotel & Spa",
+      "name": "RLG Vietnam — Content & Marketing Intelligence",
       "channels": [
-        "facebook",
-        "instagram",
-        "tiktok"
+        "facebook"
       ],
       "languageOverride": null,
       "providerOverride": null,
@@ -49,17 +47,17 @@
           "id": "tmpl_topic_jqpfcf",
           "kind": "topic",
           "content": "Bạn là content strategist cho {{product_name}}.\n\nBrand context:\n{{product_context}}\n\nGiọng thương hiệu:\n{{brand_voice}}\n\nTừ nên dùng:\n{{preferred_words}}\n\nTừ cần tránh:\n{{avoided_words}}\n\nKênh nội dung:\n{{channels}}\n\nNgôn ngữ cần hỗ trợ:\n{{languages}}\n\nHãy tạo {{quantity}} chủ đề nội dung khác nhau, có góc khai thác rõ ràng, bám brand context và phù hợp để tiếp tục mở rộng thành bài viết hoàn chỉnh.\n\nContext bổ sung:\n{{additional_context}}\n\nLưu ý:\n{{notes}}\n\nYêu cầu thêm:\n{{requirements}}",
-          "updatedAt": "2026-07-16T02:00:00.000Z"
+          "updatedAt": "2026-07-17T07:50:08.752Z"
         },
         "article": {
           "id": "tmpl_article_0h8wg3",
           "kind": "article",
           "content": "Bạn là senior content editor cho {{product_name}}.\n\nBrand context:\n{{product_context}}\n\nGiọng thương hiệu:\n{{brand_voice}}\n\nTừ nên dùng:\n{{preferred_words}}\n\nTừ cần tránh:\n{{avoided_words}}\n\nKênh nội dung:\n{{channels}}\n\nNgôn ngữ bắt buộc:\n{{languages}}\n\nMở rộng chủ đề sau thành bài viết hoàn chỉnh:\n{{topic}}\n\nContext bổ sung:\n{{additional_context}}\n\nLưu ý:\n{{notes}}\n\nYêu cầu thêm:\n{{requirements}}\n\nTrả về tiêu đề, audience, body, hashtags, SEO, CTA và biến thể theo từng kênh.",
-          "updatedAt": "2026-07-16T02:00:00.000Z"
+          "updatedAt": "2026-07-17T07:50:08.752Z"
         }
       },
       "createdAt": "2026-07-10T02:00:00.000Z",
-      "updatedAt": "2026-07-16T02:00:00.000Z"
+      "updatedAt": "2026-07-17T07:50:08.762Z"
     },
     {
       "id": "product_greenviet",
@@ -589,6 +587,6 @@
       "website"
     ],
     "createdAt": "2026-07-07T02:00:00.000Z",
-    "updatedAt": "2026-07-17T06:34:42.145Z"
+    "updatedAt": "2026-07-17T07:50:08.762Z"
   }
 }
