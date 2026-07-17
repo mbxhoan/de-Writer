@@ -1,0 +1,11 @@
+{
+    "chat.mcp.serverSampling": {
+        "rlg/.vscode/mcp.json: supabase": {
+            "allowedModels": [
+                "copilot/auto",
+                "copilotcli/claude-haiku-4.5",
+                "copilotcli/gpt-5-mini"
+            ]
+        }
+    }
+}
