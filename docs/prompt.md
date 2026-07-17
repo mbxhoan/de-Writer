@@ -1,0 +1,1 @@
+- Tôi muốn là mỗi sản phẩm sẽ có 1 bộ prompt set sẵn, ví dụ:
