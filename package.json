@@ -5,9 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "test": "node --experimental-default-type=module --test tests/*.test.js"
   },
   "dependencies": {
+    "jszip": "^3.10.1",
     "next": "15.1.6",
     "react": "19.0.0",
     "react-dom": "19.0.0"
