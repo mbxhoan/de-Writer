@@ -118,6 +118,57 @@ function ProductCard({ product, selected, onClick }) {
   );
 }
 
+function BatchTopicPicker({ batch, posts, selectedTopicIds, onToggle, onSelectAll, onSave, onDelete, isPending }) {
+  const savedTopicIds = new Set(
+    posts.filter((post) => post.sourceBatchId === batch.id).map((post) => post.sourceTopicId),
+  );
+  const pendingTopicIds = selectedTopicIds.filter((topicId) => !savedTopicIds.has(topicId));
+
+  return (
+    <>
+      <div className="batch-detail-head">
+        <div>
+          <span className="eyebrow">{batch.productName}</span>
+          <h2>{batch.quantity} chủ đề đã tạo</h2>
+          <p>{formatDateLabel(batch.createdAt)} · {savedTopicIds.size} chủ đề đã lưu</p>
+        </div>
+        <div className="batch-actions">
+          <button className="btn btn-secondary btn-small" type="button" onClick={onSelectAll} disabled={isPending}>
+            Chọn tất cả chưa lưu
+          </button>
+          <button className="btn btn-primary btn-small" type="button" disabled={!pendingTopicIds.length || isPending} onClick={onSave}>
+            Lưu {pendingTopicIds.length || ''} chủ đề
+          </button>
+        </div>
+      </div>
+      <details className="prompt-details">
+        <summary>Xem prompt đã dùng</summary>
+        <pre className="batch-prompt">{batch.promptSnapshot}</pre>
+      </details>
+      <div className="topic-grid">
+        {batch.topics.map((topic) => {
+          const saved = savedTopicIds.has(topic.id);
+          const checked = saved || selectedTopicIds.includes(topic.id);
+          return (
+            <article className={`topic-option ${checked ? 'topic-option-active' : ''} ${saved ? 'topic-option-saved' : ''}`} key={topic.id}>
+              <label>
+                <input type="checkbox" checked={checked} disabled={saved} onChange={() => onToggle(topic.id)} />
+                <span>
+                  <strong>{topic.title}</strong>
+                  <p>{topic.angle}</p>
+                </span>
+              </label>
+              <div className="topic-option-foot">
+                {saved ? <span className="mini-pill">Đã lưu</span> : <button className="text-button" type="button" onClick={() => onDelete(topic.id)} disabled={isPending}>Xoá</button>}
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </>
+  );
+}
+
 function ChannelPick({ channelId, checked, onToggle }) {
   const channel = CHANNEL_MAP[channelId];
   return (
@@ -143,6 +194,8 @@ function VariantCopyButton({ onClick }) {
     </button>
   );
 }
+
+const VIEW_IDS = ['overview', 'content', 'products', 'workspace', 'activity'];
 
 export default function PhaseOneApp({ initialState }) {
   const [appState, setAppState] = useState(initialState);
@@ -177,6 +230,7 @@ export default function PhaseOneApp({ initialState }) {
   const [activeView, setActiveView] = useState('overview');
   const [isProductDrawerOpen, setProductDrawerOpen] = useState(false);
   const [isPostDrawerOpen, setPostDrawerOpen] = useState(false);
+  const [openBatchId, setOpenBatchId] = useState(null);
   const [banner, setBanner] = useState(null);
   const [isPending, startTransition] = useTransition();
   const deferredPostQuery = useDeferredValue(postQuery);
@@ -224,6 +278,23 @@ export default function PhaseOneApp({ initialState }) {
     setPostDraft(nextPost ? createPostDraft(nextPost) : null);
     setActiveLanguage(nextPost?.resolvedLanguages?.[0] || 'vi');
   }, [appState.posts, selectedPostId]);
+
+  useEffect(() => {
+    function syncViewFromLocation() {
+      const view = window.location.hash.replace('#', '');
+      if (VIEW_IDS.includes(view)) {
+        setActiveView(view);
+      }
+    }
+
+    syncViewFromLocation();
+    window.addEventListener('hashchange', syncViewFromLocation);
+    window.addEventListener('popstate', syncViewFromLocation);
+    return () => {
+      window.removeEventListener('hashchange', syncViewFromLocation);
+      window.removeEventListener('popstate', syncViewFromLocation);
+    };
+  }, []);
 
   const visiblePosts = appState.posts.filter((post) => {
     const query = deferredPostQuery.trim().toLowerCase();
@@ -371,6 +442,7 @@ export default function PhaseOneApp({ initialState }) {
       });
       applyState(nextState, { productId: topicForm.productId, postId: selectedPostId });
       setTopicForm((current) => ({ ...current, additionalContext: '', notes: '', requirements: '' }));
+      setOpenBatchId(nextState.topicBatches[0]?.id || null);
       setBanner({ type: 'success', text: 'Đã tạo batch chủ đề mới.' });
     });
   }
@@ -389,7 +461,6 @@ export default function PhaseOneApp({ initialState }) {
         productId: selectedProductId,
         postId: createdPost?.id || selectedPostId,
       });
-      setSelectedTopics((current) => ({ ...current, [batchId]: [] }));
       setBanner({ type: 'success', text: 'Đã lưu chủ đề đã chọn thành bài viết.' });
     });
   }
@@ -469,8 +540,28 @@ export default function PhaseOneApp({ initialState }) {
   function selectAllBatchTopics(batch) {
     setSelectedTopics((current) => ({
       ...current,
-      [batch.id]: batch.topics.map((topic) => topic.id),
+      [batch.id]: batch.topics
+        .filter((topic) => !appState.posts.some((post) => post.sourceTopicId === topic.id))
+        .map((topic) => topic.id),
     }));
+  }
+
+  function deleteBatchTopic(batchId, topicId) {
+    if (!window.confirm('Xoá chủ đề này khỏi batch? Thao tác này không thể hoàn tác.')) {
+      return;
+    }
+
+    runTask(async () => {
+      const nextState = await requestJson(`/api/topic-batches?batchId=${batchId}&topicId=${topicId}`, {
+        method: 'DELETE',
+      });
+      applyState(nextState, { productId: selectedProductId, postId: selectedPostId });
+      setSelectedTopics((current) => ({
+        ...current,
+        [batchId]: (current[batchId] || []).filter((id) => id !== topicId),
+      }));
+      setBanner({ type: 'success', text: 'Đã xoá chủ đề khỏi batch.' });
+    });
   }
 
   function updateLanguageBlock(language, updater) {
@@ -511,6 +602,14 @@ export default function PhaseOneApp({ initialState }) {
     });
   }
 
+  function setView(view) {
+    const nextView = VIEW_IDS.includes(view) ? view : 'overview';
+    setActiveView(nextView);
+    if (window.location.hash !== `#${nextView}`) {
+      window.history.pushState(null, '', `#${nextView}`);
+    }
+  }
+
   const navigation = [
     { id: 'overview', label: 'Tổng quan', icon: 'dashboard' },
     { id: 'content', label: 'Nội dung', icon: 'file', count: appState.posts.length },
@@ -538,7 +637,7 @@ export default function PhaseOneApp({ initialState }) {
   return (
     <div className="app-shell">
       <aside className="app-sidebar">
-        <button className="sidebar-brand" type="button" onClick={() => setActiveView('overview')}>
+        <button className="sidebar-brand" type="button" onClick={() => setView('overview')}>
           <span className="phase-brand-mark"><Icon name="pen" size={19} stroke="var(--color-bg)" /></span>
           <span><strong>de Writer</strong><small>Content desk</small></span>
         </button>
@@ -548,7 +647,7 @@ export default function PhaseOneApp({ initialState }) {
               className={`nav-item ${activeView === item.id ? 'nav-item-active' : ''}`}
               key={item.id}
               type="button"
-              onClick={() => setActiveView(item.id)}
+              onClick={() => setView(item.id)}
             >
               <Icon name={item.icon} size={17} />
               <span>{item.label}</span>
@@ -564,13 +663,9 @@ export default function PhaseOneApp({ initialState }) {
 
       <main className="phase-shell">
         <header className="app-topbar">
-          <div>
-            <span className="eyebrow">{navigation.find((item) => item.id === activeView)?.label}</span>
-            <h1>{activeView === 'overview' ? 'Bàn làm việc hôm nay' : navigation.find((item) => item.id === activeView)?.label}</h1>
-          </div>
           <div className="topbar-meta">
             <span>{appState.workspace.name}</span>
-            <button className="avatar" type="button" onClick={() => setActiveView('workspace')} aria-label="Mở workspace">
+            <button className="avatar" type="button" onClick={() => setView('workspace')} aria-label="Mở workspace">
               {appState.workspace.ownerEmail.slice(0, 1).toUpperCase()}
             </button>
           </div>
@@ -582,34 +677,20 @@ export default function PhaseOneApp({ initialState }) {
 
       {activeView === 'overview' ? (
         <section className="overview-view">
-          <div className="desk-intro">
-            <div>
-              <span className="eyebrow">Content operations · Phase 1</span>
-              <h2>Biến brief thành bài viết, theo từng sản phẩm.</h2>
-              <p>Chọn nơi bạn muốn làm việc. Thao tác chi tiết sẽ mở trong không gian riêng để bàn làm việc luôn gọn.</p>
-            </div>
-            <button className="btn btn-primary" type="button" onClick={() => setActiveView('content')}>
-              Mở nội dung <Icon name="back" size={15} style={{ transform: 'rotate(180deg)' }} />
+          <div className="overview-actions">
+            <button className="btn btn-primary" type="button" onClick={() => setView('content')}>
+              Tạo nội dung <Icon name="back" size={15} style={{ transform: 'rotate(180deg)' }} />
             </button>
           </div>
           <div className="overview-stats">
-            <button type="button" onClick={() => setActiveView('products')}><span>Sản phẩm đang quản lý</span><strong>{appState.products.length}</strong><small>Quản lý brand & prompt</small></button>
-            <button type="button" onClick={() => setActiveView('content')}><span>Bài viết trong pipeline</span><strong>{appState.posts.length}</strong><small>Mở danh sách nội dung</small></button>
-            <button type="button" onClick={() => setActiveView('activity')}><span>Lần tạo nội dung</span><strong>{appState.generationRuns.length}</strong><small>Kiểm tra lịch sử chạy</small></button>
+            <button type="button" onClick={() => setView('products')}><span>Sản phẩm</span><strong>{appState.products.length}</strong></button>
+            <button type="button" onClick={() => setView('content')}><span>Bài viết</span><strong>{appState.posts.length}</strong></button>
+            <button type="button" onClick={() => setView('activity')}><span>Lần tạo nội dung</span><strong>{appState.generationRuns.length}</strong></button>
           </div>
-          <div className="overview-bottom">
-            <div className="daily-note">
-              <span className="eyebrow">Daily desk</span>
-              <h3>Luồng làm việc</h3>
-              <ol><li>Chọn sản phẩm và hoàn thiện prompt.</li><li>Tạo batch chủ đề trong Nội dung.</li><li>Chọn chủ đề, biên tập bài và lên lịch theo kênh.</li></ol>
-            </div>
-            <div className="workspace-glance">
-              <span className="eyebrow">Workspace</span>
-              <strong>{appState.workspace.name}</strong>
-              <p>{appState.workspace.ownerEmail}</p>
-              <button className="btn btn-secondary btn-small" type="button" onClick={() => setActiveView('workspace')}>Mở cài đặt</button>
-            </div>
-          </div>
+          <details className="quick-guide">
+            <summary>Hướng dẫn nhanh</summary>
+            <ol><li>Chọn sản phẩm và hoàn thiện prompt.</li><li>Tạo batch trong Nội dung.</li><li>Lưu chủ đề phù hợp để biên tập bài viết.</li></ol>
+          </details>
         </section>
       ) : null}
 
@@ -894,45 +975,50 @@ export default function PhaseOneApp({ initialState }) {
                 </label>
               </div>
 
-              <label className="field">
-                <span>Prompt tạo chủ đề</span>
-                <textarea
-                  className="input prompt-area"
-                  value={productDraft.promptTemplates.topic.content}
-                  onChange={(event) =>
-                    setProductDraft((current) => ({
-                      ...current,
-                      promptTemplates: {
-                        ...current.promptTemplates,
-                        topic: {
-                          ...current.promptTemplates.topic,
-                          content: event.target.value,
-                        },
-                      },
-                    }))
-                  }
-                />
-              </label>
+              <details className="product-prompts">
+                <summary>Tùy chỉnh prompt tạo chủ đề và bài viết</summary>
+                <div className="product-prompts-body">
+                  <label className="field">
+                    <span>Prompt tạo chủ đề</span>
+                    <textarea
+                      className="input prompt-area"
+                      value={productDraft.promptTemplates.topic.content}
+                      onChange={(event) =>
+                        setProductDraft((current) => ({
+                          ...current,
+                          promptTemplates: {
+                            ...current.promptTemplates,
+                            topic: {
+                              ...current.promptTemplates.topic,
+                              content: event.target.value,
+                            },
+                          },
+                        }))
+                      }
+                    />
+                  </label>
 
-              <label className="field">
-                <span>Prompt mở rộng bài viết</span>
-                <textarea
-                  className="input prompt-area"
-                  value={productDraft.promptTemplates.article.content}
-                  onChange={(event) =>
-                    setProductDraft((current) => ({
-                      ...current,
-                      promptTemplates: {
-                        ...current.promptTemplates,
-                        article: {
-                          ...current.promptTemplates.article,
-                          content: event.target.value,
-                        },
-                      },
-                    }))
-                  }
-                />
-              </label>
+                  <label className="field">
+                    <span>Prompt mở rộng bài viết</span>
+                    <textarea
+                      className="input prompt-area"
+                      value={productDraft.promptTemplates.article.content}
+                      onChange={(event) =>
+                        setProductDraft((current) => ({
+                          ...current,
+                          promptTemplates: {
+                            ...current.promptTemplates,
+                            article: {
+                              ...current.promptTemplates.article,
+                              content: event.target.value,
+                            },
+                          },
+                        }))
+                      }
+                    />
+                  </label>
+                </div>
+              </details>
 
               <div className="action-row">
                 <button className="btn btn-primary" type="button" onClick={saveProduct}>
@@ -1031,60 +1117,45 @@ export default function PhaseOneApp({ initialState }) {
 
           <div className="batch-list">
             {appState.topicBatches.map((batch) => {
-              const alreadyCreated = new Set(
-                appState.posts
-                  .filter((post) => post.sourceBatchId === batch.id)
-                  .map((post) => post.sourceTopicId),
-              );
-              const selectedForBatch = selectedTopics[batch.id] || [];
-
+              const savedCount = appState.posts.filter((post) => post.sourceBatchId === batch.id).length;
               return (
-                <article className="batch-card" key={batch.id}>
-                  <div className="batch-head">
-                    <div>
-                      <strong>{batch.productName}</strong>
-                      <div className="text-muted">
-                        {batch.quantity} topics · {formatDateLabel(batch.createdAt)}
-                      </div>
-                    </div>
-                    <div className="batch-actions">
-                      <button className="btn btn-secondary btn-small" type="button" onClick={() => selectAllBatchTopics(batch)}>
-                        Chọn tất cả
-                      </button>
-                      <button
-                        className="btn btn-primary btn-small"
-                        type="button"
-                        disabled={!selectedForBatch.length}
-                        onClick={() => saveTopicsAsPosts(batch.id)}
-                      >
-                        Lưu thành post
-                      </button>
-                    </div>
+                <article className="batch-card batch-summary" key={batch.id}>
+                  <div>
+                    <span className="eyebrow">{batch.productName}</span>
+                    <strong>{batch.topics.length} chủ đề · {savedCount} đã lưu</strong>
+                    <p>{formatDateLabel(batch.createdAt)}</p>
                   </div>
-                  <p className="batch-prompt">{batch.promptSnapshot}</p>
-                  <div className="topic-grid">
-                    {batch.topics.map((topic) => {
-                      const checked = selectedForBatch.includes(topic.id);
-                      return (
-                        <label className={`topic-option ${checked ? 'topic-option-active' : ''}`} key={topic.id}>
-                          <input
-                            type="checkbox"
-                            checked={checked}
-                            onChange={() => toggleBatchTopic(batch.id, topic.id)}
-                          />
-                          <div>
-                            <strong>{topic.title}</strong>
-                            <p>{topic.angle}</p>
-                            {alreadyCreated.has(topic.id) ? <span className="mini-pill">Đã thành post</span> : null}
-                          </div>
-                        </label>
-                      );
-                    })}
-                  </div>
+                  <button className="btn btn-secondary btn-small" type="button" onClick={() => setOpenBatchId(batch.id)}>
+                    Mở batch
+                  </button>
                 </article>
               );
             })}
           </div>
+          {openBatchId ? (() => {
+            const batch = appState.topicBatches.find((item) => item.id === openBatchId);
+            if (!batch) return null;
+            return (
+              <div className="drawer-backdrop" onMouseDown={() => setOpenBatchId(null)}>
+                <section className="drawer-panel batch-drawer" role="dialog" aria-modal="true" aria-label="Chi tiết batch chủ đề" onMouseDown={(event) => event.stopPropagation()}>
+                  <div className="drawer-head">
+                    <div><span className="eyebrow">Topic batch</span><h2>Chọn chủ đề phù hợp</h2></div>
+                    <button className="drawer-close" type="button" onClick={() => setOpenBatchId(null)} aria-label="Đóng">×</button>
+                  </div>
+                  <BatchTopicPicker
+                    batch={batch}
+                    posts={appState.posts}
+                    selectedTopicIds={selectedTopics[batch.id] || []}
+                    onToggle={(topicId) => toggleBatchTopic(batch.id, topicId)}
+                    onSelectAll={() => selectAllBatchTopics(batch)}
+                    onSave={() => saveTopicsAsPosts(batch.id)}
+                    onDelete={(topicId) => deleteBatchTopic(batch.id, topicId)}
+                    isPending={isPending}
+                  />
+                </section>
+              </div>
+            );
+          })() : null}
         </section> : null}
 
         {activeView === 'content' ? <section className="card elev-md phase-card content-posts-panel">

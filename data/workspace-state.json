@@ -26,7 +26,7 @@
       }
     },
     "createdAt": "2026-07-07T02:00:00.000Z",
-    "updatedAt": "2026-07-16T02:00:00.000Z"
+    "updatedAt": "2026-07-17T06:34:42.145Z"
   },
   "products": [
     {
@@ -95,6 +95,116 @@
     }
   ],
   "topicBatches": [
+    {
+      "id": "batch_db25762f29b3",
+      "productId": "product_sunrise",
+      "quantity": 8,
+      "additionalContext": "",
+      "notes": "",
+      "requirements": "",
+      "status": "completed",
+      "topics": [
+        {
+          "id": "topic_ee5a4b20eb88",
+          "title": "Combo nghỉ dưỡng + spa cho cặp đôi cuối tuần",
+          "angle": "Tập trung vào cảm giác thư giãn, sunset view và ưu đãi giới hạn để kéo booking nhanh."
+        },
+        {
+          "id": "topic_ea5b1f4cf06c",
+          "title": "Checklist du lịch gia đình trong mùa cao điểm",
+          "angle": "Biến câu hỏi thường gặp của khách thành nội dung hữu ích, tăng niềm tin trước khi đặt phòng."
+        },
+        {
+          "id": "topic_69746ea7bdad",
+          "title": "Một ngày chậm lại ở khu spa ven biển",
+          "angle": "Khai thác cảm giác trải nghiệm hơn là chỉ liệt kê dịch vụ, phù hợp social và blog."
+        },
+        {
+          "id": "topic_7c200cc272de",
+          "title": "Bữa tối buffet hải sản như một lý do để ở lại thêm một đêm",
+          "angle": "Đẩy câu chuyện trải nghiệm ẩm thực để bán chéo phòng và F&B."
+        },
+        {
+          "id": "topic_8979fc3a2a94",
+          "title": "Gợi ý lịch trình 2N1Đ không cần đi xa",
+          "angle": "Phù hợp nhóm khách nội địa muốn ra quyết định nhanh cho kỳ nghỉ ngắn."
+        },
+        {
+          "id": "topic_3ea66470748f",
+          "title": "Combo nghỉ dưỡng + spa cho cặp đôi cuối tuần",
+          "angle": "Tập trung vào cảm giác thư giãn, sunset view và ưu đãi giới hạn để kéo booking nhanh."
+        },
+        {
+          "id": "topic_9e6cc640ac4c",
+          "title": "Checklist du lịch gia đình trong mùa cao điểm",
+          "angle": "Biến câu hỏi thường gặp của khách thành nội dung hữu ích, tăng niềm tin trước khi đặt phòng."
+        },
+        {
+          "id": "topic_e823ef51ce12",
+          "title": "Một ngày chậm lại ở khu spa ven biển",
+          "angle": "Khai thác cảm giác trải nghiệm hơn là chỉ liệt kê dịch vụ, phù hợp social và blog."
+        }
+      ],
+      "promptSnapshot": "Bạn là content strategist cho Sunrise Hotel & Spa.\n\nBrand context:\nKhách sạn nghỉ dưỡng ven biển tập trung vào trải nghiệm thư giãn, spa, ẩm thực và các combo ngắn ngày cho khách nội địa.\n\nGiọng thương hiệu:\nẤm áp, tinh tế, giàu cảm giác nghỉ dưỡng nhưng không phô trương. Ưu tiên ngôn ngữ gợi hình, nhẹ và có nhịp chậm.\n\nTừ nên dùng:\nthư giãn, biển Mỹ Khê, tinh tế, riêng tư, tái tạo năng lượng\n\nTừ cần tránh:\nrẻ nhất, số 1, cam kết 100%, sốc, hủy diệt\n\nKênh nội dung:\nFacebook, Instagram, TikTok\n\nNgôn ngữ cần hỗ trợ:\nVI + EN\n\nHãy tạo 8 chủ đề nội dung khác nhau, có góc khai thác rõ ràng, bám brand context và phù hợp để tiếp tục mở rộng thành bài viết hoàn chỉnh.\n\nContext bổ sung:\n\n\nLưu ý:\n\n\nYêu cầu thêm:\n",
+      "generationRunId": "run_209f3a84f67e",
+      "createdAt": "2026-07-17T06:34:42.145Z",
+      "updatedAt": "2026-07-17T06:34:42.145Z"
+    },
+    {
+      "id": "batch_ccbf315c0a22",
+      "productId": "product_sunrise",
+      "quantity": 8,
+      "additionalContext": "",
+      "notes": "",
+      "requirements": "",
+      "status": "completed",
+      "topics": [
+        {
+          "id": "topic_dcf9615b1ed4",
+          "title": "Combo nghỉ dưỡng + spa cho cặp đôi cuối tuần",
+          "angle": "Tập trung vào cảm giác thư giãn, sunset view và ưu đãi giới hạn để kéo booking nhanh."
+        },
+        {
+          "id": "topic_180a17a4c8ff",
+          "title": "Checklist du lịch gia đình trong mùa cao điểm",
+          "angle": "Biến câu hỏi thường gặp của khách thành nội dung hữu ích, tăng niềm tin trước khi đặt phòng."
+        },
+        {
+          "id": "topic_a74ef83ad950",
+          "title": "Một ngày chậm lại ở khu spa ven biển",
+          "angle": "Khai thác cảm giác trải nghiệm hơn là chỉ liệt kê dịch vụ, phù hợp social và blog."
+        },
+        {
+          "id": "topic_9d222831f9b7",
+          "title": "Bữa tối buffet hải sản như một lý do để ở lại thêm một đêm",
+          "angle": "Đẩy câu chuyện trải nghiệm ẩm thực để bán chéo phòng và F&B."
+        },
+        {
+          "id": "topic_26b110ef0848",
+          "title": "Gợi ý lịch trình 2N1Đ không cần đi xa",
+          "angle": "Phù hợp nhóm khách nội địa muốn ra quyết định nhanh cho kỳ nghỉ ngắn."
+        },
+        {
+          "id": "topic_1bad4debee24",
+          "title": "Combo nghỉ dưỡng + spa cho cặp đôi cuối tuần",
+          "angle": "Tập trung vào cảm giác thư giãn, sunset view và ưu đãi giới hạn để kéo booking nhanh."
+        },
+        {
+          "id": "topic_a79825be87fd",
+          "title": "Checklist du lịch gia đình trong mùa cao điểm",
+          "angle": "Biến câu hỏi thường gặp của khách thành nội dung hữu ích, tăng niềm tin trước khi đặt phòng."
+        },
+        {
+          "id": "topic_d77ba512f285",
+          "title": "Một ngày chậm lại ở khu spa ven biển",
+          "angle": "Khai thác cảm giác trải nghiệm hơn là chỉ liệt kê dịch vụ, phù hợp social và blog."
+        }
+      ],
+      "promptSnapshot": "Bạn là content strategist cho Sunrise Hotel & Spa.\n\nBrand context:\nKhách sạn nghỉ dưỡng ven biển tập trung vào trải nghiệm thư giãn, spa, ẩm thực và các combo ngắn ngày cho khách nội địa.\n\nGiọng thương hiệu:\nẤm áp, tinh tế, giàu cảm giác nghỉ dưỡng nhưng không phô trương. Ưu tiên ngôn ngữ gợi hình, nhẹ và có nhịp chậm.\n\nTừ nên dùng:\nthư giãn, biển Mỹ Khê, tinh tế, riêng tư, tái tạo năng lượng\n\nTừ cần tránh:\nrẻ nhất, số 1, cam kết 100%, sốc, hủy diệt\n\nKênh nội dung:\nFacebook, Instagram, TikTok\n\nNgôn ngữ cần hỗ trợ:\nVI + EN\n\nHãy tạo 8 chủ đề nội dung khác nhau, có góc khai thác rõ ràng, bám brand context và phù hợp để tiếp tục mở rộng thành bài viết hoàn chỉnh.\n\nContext bổ sung:\n\n\nLưu ý:\n\n\nYêu cầu thêm:\n",
+      "generationRunId": "run_d53e12ae77b8",
+      "createdAt": "2026-07-17T06:34:30.617Z",
+      "updatedAt": "2026-07-17T06:34:30.617Z"
+    },
     {
       "id": "batch_seed_sunrise",
       "productId": "product_sunrise",
@@ -239,6 +349,114 @@
   ],
   "generationRuns": [
     {
+      "id": "run_209f3a84f67e",
+      "type": "topic",
+      "status": "completed",
+      "workspaceId": "workspace_demo",
+      "productId": "product_sunrise",
+      "batchId": "batch_db25762f29b3",
+      "postId": null,
+      "provider": "openai",
+      "model": "gpt-5.6-terra",
+      "promptSnapshot": "Bạn là content strategist cho Sunrise Hotel & Spa.\n\nBrand context:\nKhách sạn nghỉ dưỡng ven biển tập trung vào trải nghiệm thư giãn, spa, ẩm thực và các combo ngắn ngày cho khách nội địa.\n\nGiọng thương hiệu:\nẤm áp, tinh tế, giàu cảm giác nghỉ dưỡng nhưng không phô trương. Ưu tiên ngôn ngữ gợi hình, nhẹ và có nhịp chậm.\n\nTừ nên dùng:\nthư giãn, biển Mỹ Khê, tinh tế, riêng tư, tái tạo năng lượng\n\nTừ cần tránh:\nrẻ nhất, số 1, cam kết 100%, sốc, hủy diệt\n\nKênh nội dung:\nFacebook, Instagram, TikTok\n\nNgôn ngữ cần hỗ trợ:\nVI + EN\n\nHãy tạo 8 chủ đề nội dung khác nhau, có góc khai thác rõ ràng, bám brand context và phù hợp để tiếp tục mở rộng thành bài viết hoàn chỉnh.\n\nContext bổ sung:\n\n\nLưu ý:\n\n\nYêu cầu thêm:\n",
+      "outputSnapshot": {
+        "topics": [
+          {
+            "title": "Combo nghỉ dưỡng + spa cho cặp đôi cuối tuần",
+            "angle": "Tập trung vào cảm giác thư giãn, sunset view và ưu đãi giới hạn để kéo booking nhanh."
+          },
+          {
+            "title": "Checklist du lịch gia đình trong mùa cao điểm",
+            "angle": "Biến câu hỏi thường gặp của khách thành nội dung hữu ích, tăng niềm tin trước khi đặt phòng."
+          },
+          {
+            "title": "Một ngày chậm lại ở khu spa ven biển",
+            "angle": "Khai thác cảm giác trải nghiệm hơn là chỉ liệt kê dịch vụ, phù hợp social và blog."
+          },
+          {
+            "title": "Bữa tối buffet hải sản như một lý do để ở lại thêm một đêm",
+            "angle": "Đẩy câu chuyện trải nghiệm ẩm thực để bán chéo phòng và F&B."
+          },
+          {
+            "title": "Gợi ý lịch trình 2N1Đ không cần đi xa",
+            "angle": "Phù hợp nhóm khách nội địa muốn ra quyết định nhanh cho kỳ nghỉ ngắn."
+          },
+          {
+            "title": "Combo nghỉ dưỡng + spa cho cặp đôi cuối tuần",
+            "angle": "Tập trung vào cảm giác thư giãn, sunset view và ưu đãi giới hạn để kéo booking nhanh."
+          },
+          {
+            "title": "Checklist du lịch gia đình trong mùa cao điểm",
+            "angle": "Biến câu hỏi thường gặp của khách thành nội dung hữu ích, tăng niềm tin trước khi đặt phòng."
+          },
+          {
+            "title": "Một ngày chậm lại ở khu spa ven biển",
+            "angle": "Khai thác cảm giác trải nghiệm hơn là chỉ liệt kê dịch vụ, phù hợp social và blog."
+          }
+        ]
+      },
+      "usage": {
+        "mode": "mock"
+      },
+      "error": null,
+      "createdAt": "2026-07-17T06:34:42.138Z",
+      "updatedAt": "2026-07-17T06:34:42.144Z"
+    },
+    {
+      "id": "run_d53e12ae77b8",
+      "type": "topic",
+      "status": "completed",
+      "workspaceId": "workspace_demo",
+      "productId": "product_sunrise",
+      "batchId": "batch_ccbf315c0a22",
+      "postId": null,
+      "provider": "openai",
+      "model": "gpt-5.6-terra",
+      "promptSnapshot": "Bạn là content strategist cho Sunrise Hotel & Spa.\n\nBrand context:\nKhách sạn nghỉ dưỡng ven biển tập trung vào trải nghiệm thư giãn, spa, ẩm thực và các combo ngắn ngày cho khách nội địa.\n\nGiọng thương hiệu:\nẤm áp, tinh tế, giàu cảm giác nghỉ dưỡng nhưng không phô trương. Ưu tiên ngôn ngữ gợi hình, nhẹ và có nhịp chậm.\n\nTừ nên dùng:\nthư giãn, biển Mỹ Khê, tinh tế, riêng tư, tái tạo năng lượng\n\nTừ cần tránh:\nrẻ nhất, số 1, cam kết 100%, sốc, hủy diệt\n\nKênh nội dung:\nFacebook, Instagram, TikTok\n\nNgôn ngữ cần hỗ trợ:\nVI + EN\n\nHãy tạo 8 chủ đề nội dung khác nhau, có góc khai thác rõ ràng, bám brand context và phù hợp để tiếp tục mở rộng thành bài viết hoàn chỉnh.\n\nContext bổ sung:\n\n\nLưu ý:\n\n\nYêu cầu thêm:\n",
+      "outputSnapshot": {
+        "topics": [
+          {
+            "title": "Combo nghỉ dưỡng + spa cho cặp đôi cuối tuần",
+            "angle": "Tập trung vào cảm giác thư giãn, sunset view và ưu đãi giới hạn để kéo booking nhanh."
+          },
+          {
+            "title": "Checklist du lịch gia đình trong mùa cao điểm",
+            "angle": "Biến câu hỏi thường gặp của khách thành nội dung hữu ích, tăng niềm tin trước khi đặt phòng."
+          },
+          {
+            "title": "Một ngày chậm lại ở khu spa ven biển",
+            "angle": "Khai thác cảm giác trải nghiệm hơn là chỉ liệt kê dịch vụ, phù hợp social và blog."
+          },
+          {
+            "title": "Bữa tối buffet hải sản như một lý do để ở lại thêm một đêm",
+            "angle": "Đẩy câu chuyện trải nghiệm ẩm thực để bán chéo phòng và F&B."
+          },
+          {
+            "title": "Gợi ý lịch trình 2N1Đ không cần đi xa",
+            "angle": "Phù hợp nhóm khách nội địa muốn ra quyết định nhanh cho kỳ nghỉ ngắn."
+          },
+          {
+            "title": "Combo nghỉ dưỡng + spa cho cặp đôi cuối tuần",
+            "angle": "Tập trung vào cảm giác thư giãn, sunset view và ưu đãi giới hạn để kéo booking nhanh."
+          },
+          {
+            "title": "Checklist du lịch gia đình trong mùa cao điểm",
+            "angle": "Biến câu hỏi thường gặp của khách thành nội dung hữu ích, tăng niềm tin trước khi đặt phòng."
+          },
+          {
+            "title": "Một ngày chậm lại ở khu spa ven biển",
+            "angle": "Khai thác cảm giác trải nghiệm hơn là chỉ liệt kê dịch vụ, phù hợp social và blog."
+          }
+        ]
+      },
+      "usage": {
+        "mode": "mock"
+      },
+      "error": null,
+      "createdAt": "2026-07-17T06:34:30.612Z",
+      "updatedAt": "2026-07-17T06:34:30.617Z"
+    },
+    {
       "id": "run_seed_topics",
       "type": "topic",
       "status": "completed",
@@ -371,6 +589,6 @@
       "website"
     ],
     "createdAt": "2026-07-07T02:00:00.000Z",
-    "updatedAt": "2026-07-16T02:00:00.000Z"
+    "updatedAt": "2026-07-17T06:34:42.145Z"
   }
 }
